@@ -1,1 +1,2 @@
-# main-mini-project-2024
+# mini-project
+facial recognition attendance system 
