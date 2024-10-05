@@ -171,13 +171,14 @@ class Student:
         save_btn=Button(btn_frame,text="Save",command=self.add_data,width=17,font=("times new roman",13,"bold"),bg="blue",fg="white") 
         save_btn.grid(row=0,column=0)
 
-        update_btn=Button(btn_frame,text="Update",width=17,font=("times new roman",13,"bold"),bg="blue",fg="white")
-        update_btn.grid(row=0,column=1)
+        # update_btn=Button(btn_frame,text="Update",width=17,font=("times new roman",13,"bold"),bg="blue",fg="white")
+        # update_btn.grid(row=0,column=1)
+        
 
-        delete_btn=Button(btn_frame,text="Delete",width=17,font=("times new roman",13,"bold"),bg="blue",fg="white")
+        delete_btn=Button(btn_frame,text="Delete",command=self.delete_data,width=17,font=("times new roman",13,"bold"),bg="blue",fg="white")
         delete_btn.grid(row=0,column=2)
 
-        reset_btn=Button(btn_frame,text="Reset",width=17,font=("times new roman",13,"bold"),bg="blue",fg="white")
+        reset_btn=Button(btn_frame,text="Reset",command=self.reset_data,width=17,font=("times new roman",13,"bold"),bg="blue",fg="white")
         reset_btn.grid(row=0,column=3)
 
         btn_frame1=Frame(class_student_frame,bd=2,relief=RIDGE,bg="white")
@@ -263,6 +264,7 @@ class Student:
         self.student_table.coloumn("Address",width=100)
 
         self.student_table.pack(fill=BOTH,expand=1)
+        self.student_table.bind("<ButtonRelease>",self.get_cursor)
         self.fetch_data()
 
         # ---------------------------------student declaration ----------------video 3
@@ -311,7 +313,69 @@ class Student:
                 self.student_table.insert("",END,values=1)
             conn.commit()
         conn.close()
+    #-------------get cursor-------------------
 
+    def get_cursor(self,event=""):
+        cursor_focus=self.student_table.focus()
+        content=self.student_table.item(cursor_focus)
+        data=content["values"]
+
+        self.var_dep.set(data[0]),
+        self.var_course.set(data[1]),
+        self.var_year.set(data[2]),
+        self.var_semester.set(data[3]),
+        self.var_std_id.set(data[4]),
+        self.var_std_name.set(data[5]),
+        self.var_div.set(data[6]),
+        self.var_roll.set(data[7]),
+        self.var_gender.set(data[8]),
+        self.var_email.set(data[9]),
+        self.var_phone.set(data[10]),
+        self.var_radio1.set(data[11])
+
+        # //----------------delete data-----------------
+
+    def delete_data(self):
+        if self.var_std_id.get()=="":
+            messagebox.showerror("Error","Student ID is required",parent=self.root)
+        else:
+            try:
+                delete=messagebox.askyesno("Student Delete page","Do you want to delete this data ?",parent=self.root)
+                if delete>0:
+                    conn=mysql.connector.connect(host="localhost",username="root",password="Test@123",database="face_recognizer")
+                    my_cursor=conn.cursor()
+                    sql="delete from student where student_id=%s"
+                    val=(self.var_std_id.get(),)
+                    my_cursor.execute(sql,val)
+                else:
+                    if not delete:
+                        return
+                
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+                messagebox.showinfo("Delete","Successfully deleted student details",parent=self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+
+          # //----------------reset data button-----------------           
+
+    def reset_data(self):
+        self.var_dep.set("Select Department") 
+        self.var_course.set("Select Course") 
+        self.var_year.set("Select Year")
+        self.var_semester.set("Select Semester")
+        self.va_std_id.set("")
+        self.var_std_name.set("")
+        self.var_div.set("Select Division")
+        self.var_roll.set("")
+        self.var_gender.set("Male")
+        self.var_dob.set("")
+        self.var_email.set("")
+        self.var_phone.set("")
+        self.var_address.set("")
+        self.var_teacher.set("")
+        self.var_radio1.set("")    
 
 
 
