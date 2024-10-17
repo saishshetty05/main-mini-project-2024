@@ -74,16 +74,16 @@ class Face_Recognition_System:
         b1_1.place(x=200,y=600,width=220,height=40)
 
 
-        #Photos Button
+        #Photos Button  //video 5 calling the functions
         img5=Image.open(r"C:\Users\Hp\Desktop\facerec2\college images\photos.jpg")
         width, height=220, 220
         img5=img5.resize((220,220), Image.LANCZOS) 
         self.photoimg5=ImageTk.PhotoImage(img5)
 
-        b1=Button(bg_img,image=self.photoimg5,cursor="hand2")
+        b1=Button(bg_img,image=self.photoimg5,cursor="hand2",command=self.open_img)
         b1.place(x=600,y=400,width=220,height=220)
 
-        b1_1=Button(bg_img,text="Photos",cursor="hand2",font=("times new roman",15,"bold"),bg="darkblue",fg="white")
+        b1_1=Button(bg_img,text="Photos",cursor="hand2",command=self.open_img,font=("times new roman",15,"bold"),bg="darkblue",fg="white")
         b1_1.place(x=600,y=600,width=220,height=40)
 
 
@@ -98,6 +98,13 @@ class Face_Recognition_System:
 
         b1_1=Button(bg_img,text="Exit",cursor="hand2",font=("times new roman",15,"bold"),bg="darkblue",fg="white")
         b1_1.place(x=1000,y=600,width=220,height=40)
+
+
+        # -------------video 5 -------------------
+
+    def student_details(self):
+        self.new__window=Toplevel(self.root)
+        self.app=Student(self.new__window)
 
 
         # ===============functions=============== video 3----------------------------
